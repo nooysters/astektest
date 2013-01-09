@@ -16,6 +16,7 @@
 				
 				// initailizes the size of the quads.
 				(function(){
+					bindClickToExpand($('.caption'));
 					resizeDivs(containers);
 					setContainerHeight($('#container'), $('#div1'));
 				})();
@@ -41,37 +42,43 @@
 				});
 				
 				// Expands the corresponding container when caption is clicked. 
-				$('.caption').click(function() {
-					var thisParents = $(this).parent();
-					zoomClickedFeature(thisParents);
-				});
-				
+				function bindClickToExpand(o) {
+					$(o).bind('click', function() {
+						var thisParents = $(this).parent();
+						zoomClickedFeature(thisParents);
+					});
+				}
 				
 				function zoomClickedFeature(o) {
-
+					
 					var percent;
 					var container = $(o).parent(".section-wrapper");
 					var shrinking = $(container).hasClass('small');
-					var clone = $(container).clone();
-					var width = $('#container').width();
-					var height = $('#container').height();
 					var of =  $('#container').offset();
+					
+					clone = $(container).clone();
 					
 					$(clone).css({
 						position: 'absolute',
 						height: "100%",
 						width: "100%",
-						top: of.top,
-						'z-index' : "1000",
+						top:0,
 					});
 					
+					$(clone).addClass('clone');
 					$(clone).children('div').css({height:0, opacity:0});
-					
-					$(clone).appendTo('body');
+					$(clone).children('.caption').css({width:1000});
+					$(clone).appendTo('#container');
 					$(clone).children('div').addClass('zoom', 500, 'swing');
-				
+					bindClone(clone);
 				}
 				
+				function bindClone(o) {
+					$(o).bind('click',function(){
+						$(this).children('.zoom').removeClass('zoom');
+						$(this).addClass('zoomOut',500, 'swing',function(){$(o).remove();})
+					});
+				}
 
 			//close .ready()	
 			});
@@ -91,14 +98,19 @@
 
 			.img-wrapper{ height:100%; width:100%; position:relative; z-index:0; }
 
-			#div1 .img-wrapper{background:url('images/Duets-1.jpeg') no-repeat; background-size:101%;}
-			#div2 .img-wrapper{background:url('images/SHFTwallpaper.jpeg') no-repeat; background-size:101%;}
-			#div3 .img-wrapper{background:url('images/bus_graphics-Layout.jpeg') no-repeat; background-size:101%;}
-			#div4 .img-wrapper{background:url('images/vdara.jpeg') no-repeat; background-size:101%;}
+			#div1 .img-wrapper{background:url('images/Duets-1.jpeg') no-repeat; background-size:101%; 
+			-ms-behavior: url(/background-size-polyfill-gh-pages/backgroundsize.min.htc);}
+			#div2 .img-wrapper{background:url('images/SHFTwallpaper.jpeg') no-repeat; background-size:101%; 
+			-ms-behavior: url(/background-size-polyfill-gh-pages/backgroundsize.min.htc);}
+			#div3 .img-wrapper{background:url('images/bus_graphics-Layout.jpeg') no-repeat; background-size:101%; 
+			-ms-behavior: url(/background-size-polyfill-gh-pages/backgroundsize.min.htc);}
+			#div4 .img-wrapper{background:url('images/vdara.jpeg') no-repeat; background-size:101%; 
+			-ms-behavior: url(/background-size-polyfill-gh-pages/backgroundsize.min.htc);}
 			
-			.zoom{height:100% !important; width:100% !important; opacity:100 !important;}
-			
+			.zoom{height:100% !important; width:100% !important; opacity:100 !important; z-index:1000;}
+			.zoomOut{height:100% !important; width:100% !important; opacity:0 !important;}
 			.caption{display:table-cell; background:#fff; padding:5px; position:relative}
+			
 			#top-bar, #bottom-bar{ height:50px; background:#999;}
 			
 			.no-script{height:100%;width:100%; background:url('images/SHFTwallpaper.jpeg') no-repeat; background-size:100% ; position:absolute; z-index:10000;}
