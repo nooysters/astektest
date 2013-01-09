@@ -49,6 +49,8 @@
 					});
 				}
 				
+				// Creates a copy of the clicked elements container (entire quad) and zooms it up full size!
+				// Binds the closing behavior to the copy.
 				function zoomClickedFeature(o) {
 					
 					var percent;
@@ -59,10 +61,8 @@
 					clone = $(container).clone();
 					
 					$(clone).css({
-						position: 'absolute',
 						height: "100%",
 						width: "100%",
-						top:0,
 					});
 					
 					$(clone).addClass('clone');
@@ -109,6 +109,7 @@
 			
 			.zoom{height:100% !important; width:100% !important; opacity:100 !important; z-index:1000;}
 			.zoomOut{height:100% !important; width:100% !important; opacity:0 !important;}
+			
 			.caption{display:table-cell; background:#fff; padding:5px; position:relative}
 			
 			#top-bar, #bottom-bar{ height:50px; background:#999;}
